@@ -5,28 +5,32 @@
 //   '_Delayed_Departure;fao93766109;txl2133758440;11:25+_Arrival;bru0943384722;fao93766109;11:45+_Delayed_Arrival;hel7439299980;fao93766109;12:05+_Departure;fao93766109;lis2323639855;12:30';
 
 // // Data needed for first part of the section
+const weekdays = ['mon', 'tue', 'thrus', 'fri', 'sat'];
+//ES6 can use computation in objects
+const openingHours = {
+  [weekdays[0]]: {
+    open: 12,
+    close: 22,
+  },
+  fri: {
+    open: 11,
+    close: 23,
+  },
+  sat: {
+    open: 0, // Open 24 hours
+    close: 24,
+  },
+};
 const restaurant = {
   name: 'Classico Italiano',
   location: 'Via Angelo Tavanti 23, Firenze, Italy',
   categories: ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'],
   starterMenu: ['Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad'],
   mainMenu: ['Pizza', 'Pasta', 'Risotto'],
-
-  openingHours: {
-    thu: {
-      open: 12,
-      close: 22,
-    },
-    fri: {
-      open: 11,
-      close: 23,
-    },
-    sat: {
-      open: 0, // Open 24 hours
-      close: 24,
-    },
-  },
-  orderDelivery: function ({ startIndex, mainIndex, time, address }) {
+  //ES6 enhanched object literals
+  openingHours,
+  //In ES6 object methods can no need function keyword
+  orderDelivery({ startIndex, mainIndex, time, address }) {
     console.log(
       `Order received ${this.starterMenu[startIndex]}& ${this.mainMenu[mainIndex]} will be delivered at ${time} to ${address}`
     );
@@ -41,6 +45,35 @@ const restaurant = {
     console.log(otherIng);
   },
 };
+
+///////////////////////////////////Looping Objects key values & entries////////////////////////
+const properties = Object.keys(openingHours);
+console.log(properties);
+let openStr = 'We open on ';
+for (const day of properties) {
+  openStr += `${day} ,`;
+}
+console.log(openStr);
+const values = Object.values(openingHours);
+console.log(values);
+
+const entries = Object.entries(openingHours);
+console.log(entries);
+for (const [key, { open, close }] of entries) {
+  console.log(`We on day ${key}, open at ${open} and close at ${close}`);
+}
+////////////////////////////////////OPTIONAL CHAINING//////////////////////////////////////
+// console.log(restaurant.openingHours.tue.open); //error
+console.log(restaurant.openingHours?.tue?.open);
+
+for (const day of weekdays) {
+  const open = restaurant.openingHours[day]?.open ?? 'closed';
+  console.log(`On ${day} open at ${open}`);
+}
+
+//Methods
+console.log(restaurant.order?.(0, 1) ?? 'Choose dumbo');
+console.log(restaurant.orderDelivery?.(0, 1, 11, 'dwsndn') ?? 'Choose dumbo');
 
 // // const ingridents = [prompt('Ing 1'), prompt('Ing 2'), prompt('Ing3')];
 // restaurant.oredrPasta(...ingridents); //SPREAD OPERATOR
@@ -68,39 +101,7 @@ const restaurant = {
 //////////////////////////////////////////SHORT CIRCUITING/////////////////////////
 
 //OR OPERATOR ||
-
-restaurant.numGuest = 0;
-const guest = restaurant.numGuest ? restaurant.numGuest : 10;
-console.log(guest);
-
-const otherGuest = restaurant.numGuest || 10; // better than using ternary operator
-console.log(otherGuest);
-
-//&& Operator
-if (restaurant.orderPizza) {
-  restaurant.orderPizza('panner', 'cheese');
-}
-
-restaurant.orderPizza && restaurant.orderPizza('panner', 'olive');
-
-// ?? NULLISH OPERATOR
-
-const guestCorrect = restaurant.newGuest ?? 10;
-console.log(guestCorrect);
-
-// Logical Assignment Operator
-restaurant.newGuest = 0;
-//OR assgingment operator
-restaurant.newGuest ||= 10;
-
-//nullish assignmet operator
-restaurant.newGuest ??= 111;
-
-//AND assignment Operator
-restaurant.owner = 'Jonas';
-restaurant.owner &&= 'ANOYNOMus';
-
-console.log(restaurant.owner);
+// s;
 
 // Coding Challenge #1
 
@@ -130,73 +131,83 @@ TEST DATA FOR 6: Use players 'Davies', 'Muller', 'Lewandowski' and 'Kimmich'. Th
 
 GOOD LUCK 😀
 */
-const game = {
-  team1: 'Bayern Munich',
-  team2: 'Borrussia Dortmund',
-  players: [
-    [
-      'Neuer',
-      'Pavard',
-      'Martinez',
-      'Alaba',
-      'Davies',
-      'Kimmich',
-      'Goretzka',
-      'Coman',
-      'Muller',
-      'Gnarby',
-      'Lewandowski',
-    ],
-    [
-      'Burki',
-      'Schulz',
-      'Hummels',
-      'Akanji',
-      'Hakimi',
-      'Weigl',
-      'Witsel',
-      'Hazard',
-      'Brandt',
-      'Sancho',
-      'Gotze',
-    ],
-  ],
-  score: '4:0',
-  scored: ['Lewandowski', 'Gnarby', 'Lewandowski', 'Hummels'],
-  date: 'Nov 9th, 2037',
-  odds: {
-    team1: 1.33,
-    x: 3.25,
-    team2: 6.5,
-  },
-};
+// const game = {
+//   team1: 'Bayern Munich',
+//   team2: 'Borrussia Dortmund',
+//   players: [
+//     [
+//       'Neuer',
+//       'Pavard',
+//       'Martinez',
+//       'Alaba',
+//       'Davies',
+//       'Kimmich',
+//       'Goretzka',
+//       'Coman',
+//       'Muller',
+//       'Gnarby',
+//       'Lewandowski',
+//     ],
+//     [
+//       'Burki',
+//       'Schulz',
+//       'Hummels',
+//       'Akanji',
+//       'Hakimi',
+//       'Weigl',
+//       'Witsel',
+//       'Hazard',
+//       'Brandt',
+//       'Sancho',
+//       'Gotze',
+//     ],
+//   ],
+//   score: '4:0',
+//   scored: ['Lewandowski', 'Gnarby', 'Lewandowski', 'Hummels'],
+//   date: 'Nov 9th, 2037',
+//   odds: {
+//     team1: 1.33,
+//     x: 3.25,
+//     team2: 6.5,
+//   },
+// };
 
-const [player1, player2] = game.players;
-// console.log(player1);
-// console.log(player2);
+// const [player1, player2] = game.players;
+// // console.log(player1);
+// // console.log(player2);
 
-const [gk1, ...fieldPlayers1] = player1;
-// console.log(gk1, fieldPlayers1);
+// const [gk1, ...fieldPlayers1] = player1;
+// // console.log(gk1, fieldPlayers1);
 
-const [gk2, ...fieldPlayers2] = player2;
-// console.log(gk2, fieldPlayers2);
+// const [gk2, ...fieldPlayers2] = player2;
+// // console.log(gk2, fieldPlayers2);
 
-const allPlayers = [...player1, ...player2];
-console.log(allPlayers);
+// const allPlayers = [...player1, ...player2];
+// console.log(allPlayers);
 
-const player1Final1 = [...player1, 'Thiago', 'Coutinho', 'Perisic'];
-console.log(player1Final1);
+// const player1Final1 = [...player1, 'Thiago', 'Coutinho', 'Perisic'];
+// console.log(player1Final1);
 
-const {
-  odds: { team1, x: draw, team2 },
-} = game;
-console.log(team1, draw, team2);
+// const {
+//   odds: { team1, x: draw, team2 },
+// } = game;
+// console.log(team1, draw, team2);
 
-const printGoals = function (...players) {
-  console.log(players);
-  console.log(`${players.length} scored goals`);
-};
-printGoals(...game.scored);
+// const printGoals = function (...players) {
+//   console.log(players);
+//   console.log(`${players.length} scored goals`);
+// };
+// printGoals(...game.scored);
 
-team1 < team2 && console.log('Team 1 will Win');
-team1 > team2 && console.log('Team 2 will Win');
+// team1 < team2 && console.log('Team 1 will Win');
+// team1 > team2 && console.log('Team 2 will Win');
+
+//////////////////////////////////////FOR OF LOOP//////////////////////////////////////////
+
+for (const item of restaurant.starterMenu) {
+  console.log(item);
+}
+
+for (const [i, el] of restaurant.starterMenu.entries()) {
+  console.log(`${i + 1}: ${el}`);
+}
