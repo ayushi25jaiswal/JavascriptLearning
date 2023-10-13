@@ -46,15 +46,48 @@ const restaurant = {
   },
 };
 
+///////////////////////////////////////STRINGS//////////////////////////////////////
+const airline = 'Mamta India Airlines';
+const plane = 'BNA23';
+console.log(airline[0]);
+console.log(airline[1]);
+console.log(airline[2]);
+console.log('Bh90'[0]);
+
+console.log(airline.length);
+console.log('K9027'.length);
+//Methos
+console.log(airline.indexOf('l'));
+console.log(airline.lastIndexOf('a'));
+
+console.log(airline.slice(5));
+console.log(airline.slice(5, 11));
+
+console.log(airline.slice(0, airline.indexOf(' ')));
+console.log(airline.slice(airline.lastIndexOf(' ') + 1));
+
+console.log(airline.slice(-3));
+console.log(airline.slice(1, -4));
+
+const checkMiddleSeat = function (seat) {
+  let s = seat.slice(-1);
+  if (s === 'M') console.log('You got Middle seat');
+  else console.log('Lucky You!!!!!!!');
+};
+
+checkMiddleSeat('22M');
+checkMiddleSeat('11W');
+checkMiddleSeat('12I');
+
 ////////////////////////////////////SETS/////////////////////////////////////////////////////////////
-const orderSet = new Set([
-  'Pasta',
-  'pizza',
-  'Risotto',
-  'Risotto',
-  'Risotto',
-  'pizza',
-]);
+// const orderSet = new Set([
+//   'Pasta',
+//   'pizza',
+//   'Risotto',
+//   'Risotto',
+//   'Risotto',
+//   'pizza',
+// ]);
 // console.log(orderSet);
 // //Sets are iterable
 // console.log(new Set('Ayushi'));
@@ -163,32 +196,32 @@ this event from the game events log.
 GOOD LUCK 😀
 */
 
-const gameEvents = new Map([
-  [17, '⚽️ GOAL'],
-  [36, '🔁 Substitution'],
-  [47, '⚽️ GOAL'],
-  [61, '🔁 Substitution'],
-  [64, '🔶 Yellow card'],
-  [69, '🔴 Red card'],
-  [70, '🔁 Substitution'],
-  [72, '🔁 Substitution'],
-  [76, '⚽️ GOAL'],
-  [80, '⚽️ GOAL'],
-  [92, '🔶 Yellow card'],
-]);
+// const gameEvents = new Map([
+//   [17, '⚽️ GOAL'],
+//   [36, '🔁 Substitution'],
+//   [47, '⚽️ GOAL'],
+//   [61, '🔁 Substitution'],
+//   [64, '🔶 Yellow card'],
+//   [69, '🔴 Red card'],
+//   [70, '🔁 Substitution'],
+//   [72, '🔁 Substitution'],
+//   [76, '⚽️ GOAL'],
+//   [80, '⚽️ GOAL'],
+//   [92, '🔶 Yellow card'],
+// ]);
 
-const events = [...new Set(gameEvents.values())];
-console.log(events);
-gameEvents.delete(64);
-console.log(gameEvents);
+// const events = [...new Set(gameEvents.values())];
+// console.log(events);
+// gameEvents.delete(64);
+// console.log(gameEvents);
 
-const time = [...gameEvents.keys()].pop();
-console.log(`An event happened, on average, every ${time / gameEvents.size}. `);
+// const time = [...gameEvents.keys()].pop();
+// console.log(`An event happened, on average, every ${time / gameEvents.size}. `);
 
-for (const [key, value] of gameEvents) {
-  let str = key <= 45 ? '[FIRST HALF]' : '[SECOND HALF]';
-  console.log(`${str} ${key}: ${value}`);
-}
+// for (const [key, value] of gameEvents) {
+//   let str = key <= 45 ? '[FIRST HALF]' : '[SECOND HALF]';
+//   console.log(`${str} ${key}: ${value}`);
+// }
 
 ///////////////////////////////////Looping Objects key values & entries////////////////////////
 // const properties = Object.keys(openingHours);
