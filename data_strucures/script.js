@@ -48,7 +48,7 @@ const restaurant = {
 
 ///////////////////////////////////////STRINGS//////////////////////////////////////
 const airline = 'Mamta India Airlines';
-const plane = 'BNA23';
+// const plane = 'BNA23';
 console.log(airline[0]);
 console.log(airline[1]);
 console.log(airline[2]);
@@ -78,6 +78,57 @@ const checkMiddleSeat = function (seat) {
 checkMiddleSeat('22M');
 checkMiddleSeat('11W');
 checkMiddleSeat('12I');
+
+//Capitalizing
+console.log(airline.toLowerCase());
+console.log(airline.toUpperCase());
+
+const passanger = 'aYushi';
+const passagerLowerCase = passanger.toLowerCase();
+const correctName =
+  passagerLowerCase[0].toUpperCase() + passagerLowerCase.slice(1);
+
+console.log(correctName);
+
+//Comapring Emails
+const email = 'ayushi@gmail.com';
+const loginEmail = ' AyuShi@gmail.com \n ';
+
+// const lowerEmail = loginEmail.toLowerCase();
+// const trimmedEmail = lowerEmail.trim();
+const noramlEmail = loginEmail.toLowerCase().trim();
+
+console.log(noramlEmail);
+
+//replacing
+const priceGB = '244.34$';
+const priceIND = priceGB.replace('$', 'Rup').replace('.', ',');
+console.log(priceIND);
+
+const announcement =
+  'All Passasngers are requested to come to door 3. To door 23 !!';
+const correctAnnouncement = announcement.replaceAll('door', 'gate');
+const correAnnouncement = announcement.replace(/door/g, 'gate');
+console.log(correAnnouncement);
+
+//Booleans
+const plane = 'Airbus A345';
+console.log(plane.includes('A34'));
+console.log(plane.includes('Boooo'));
+console.log(plane.startsWith('Airb'));
+console.log(plane.endsWith('345'));
+
+//Check Person Baggage
+const checkBaggage = function (items) {
+  let Baggage = items.toLowerCase();
+  if (Baggage.includes('knife') || Baggage.includes('sharp')) {
+    console.log('You are not allowed to board');
+  } else {
+    console.log('Welcome');
+  }
+};
+checkBaggage('FoOd Chips, & BOOks');
+checkBaggage('knife, cutter');
 
 ////////////////////////////////////SETS/////////////////////////////////////////////////////////////
 // const orderSet = new Set([
