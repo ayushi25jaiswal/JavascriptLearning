@@ -239,3 +239,68 @@ poll.displayResults.call({ answers: [3, 4, 5, 0] }, 'string');
 })();
 
 (() => console.log('This will also run Once'))();
+
+///////////////////////////////Closures//////////////////////////////////////////////////
+const secureBooking = function () {
+  let passengerCount = 0;
+  return function () {
+    passengerCount++;
+    console.log(`${passengerCount}`);
+  };
+};
+
+const booker = secureBooking();
+
+booker();
+booker();
+booker();
+
+console.dir(booker);
+
+let f;
+const g = function () {
+  let a = 23;
+  f = function () {
+    console.log(a * 2);
+  };
+};
+
+const h = function () {
+  let b = 123;
+  f = function () {
+    console.log(b * 2);
+  };
+};
+
+g();
+f();
+console.dir(f);
+//Reassigning f
+h();
+f();
+console.dir(f);
+
+//Example 2
+const boardPassengers = function (n, wait) {
+  const perGroup = n / 3;
+
+  setTimeout(function () {
+    console.log(`We are boarding all ${n} passengers`);
+    console.log(
+      `Will be boarding in 3 groups, of ${perGroup} pergroup passengers`
+    );
+  }, wait * 1000);
+
+  console.log(`We are boarding in ${wait} seconds`);
+};
+
+boardPassengers(180, 3);
+
+//Challenge 2
+(function () {
+  const header = document.querySelector('h1');
+  header.style.color = 'red';
+  document.querySelector('body').addEventListener('click', function () {
+    header.style.color = 'blue';
+  });
+})();
