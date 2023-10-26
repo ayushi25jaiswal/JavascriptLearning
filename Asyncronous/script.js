@@ -141,25 +141,46 @@ TEST COORDINATES 2: -33.933, 18.474
 GOOD LUCK 😀
 */
 
-const whereAmI = function (lat, lng) {
-  fetch(`https://geocode.xyz/${lat},${lng}?geoit=xml&auth=apikey`)
-    .then(res => {
-      if (!res.ok) throw new Error(`Geolocation not working ${res.status}`);
-      return res.json();
-    })
-    .then(data => {
-      console.log(data);
-      console.log(`You are in ${data.city}, ${data.country}`);
+// const whereAmI = function (lat, lng) {
+//   fetch(`https://geocode.xyz/${lat},${lng}?geoit=xml&auth=apikey`)
+//     .then(res => {
+//       if (!res.ok) throw new Error(`Geolocation not working ${res.status}`);
+//       return res.json();
+//     })
+//     .then(data => {
+//       console.log(data);
+//       console.log(`You are in ${data.city}, ${data.country}`);
 
-      return fetch(`https://restcountries.com/v3.1/name/${data.country}`);
-    })
-    .then(res => {
-      if (!res.ok) throw new Error(`Country not found ${res.status}`);
+//       return fetch(`https://restcountries.com/v3.1/name/${data.country}`);
+//     })
+//     .then(res => {
+//       if (!res.ok) throw new Error(`Country not found ${res.status}`);
 
-      return res.json();
-    })
-    .then(data => renderCountry(data[0]))
-    .catch(err => console.log(`${err.message}`));
-};
+//       return res.json();
+//     })
+//     .then(data => renderCountry(data[0]))
+//     .catch(err => console.log(`${err.message}`));
+// };
 
-whereAmI(52.508, 13.381);
+// whereAmI(52.508, 13.381);
+
+///////////////////////////////Microtasks Queue & CallBack Queue/////////////////////////////
+console.log('Time Start');
+setTimeout(() => console.log('Time at 0'), 0);
+Promise.resolve('Resolve promise 1').then(res => console.log(res));
+console.log('Time End');
+
+//////////////////////////////////////Build a Simple Promise//////////////////////////////////
+
+const lotteryPromise = new Promise(function (resolve, reject) {
+  console.log('Lottery draw is happening now');
+  setTimeout(() => {
+    if (Math.random() > 0.5) {
+      resolve('You won Lottery');
+    } else {
+      reject(new Error('You lost your money'));
+    }
+  }, 2000);
+});
+
+lotteryPromise.then(res => console.log(res)).catch(err => console.error(err));
