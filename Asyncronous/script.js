@@ -165,22 +165,82 @@ GOOD LUCK 😀
 // whereAmI(52.508, 13.381);
 
 ///////////////////////////////Microtasks Queue & CallBack Queue/////////////////////////////
-console.log('Time Start');
-setTimeout(() => console.log('Time at 0'), 0);
-Promise.resolve('Resolve promise 1').then(res => console.log(res));
-console.log('Time End');
+// console.log('Time Start');
+// setTimeout(() => console.log('Time at 0'), 0);
+// Promise.resolve('Resolve promise 1').then(res => console.log(res));
+// console.log('Time End');
 
-//////////////////////////////////////Build a Simple Promise//////////////////////////////////
+// //////////////////////////////////////Build a Simple Promise//////////////////////////////////
 
-const lotteryPromise = new Promise(function (resolve, reject) {
-  console.log('Lottery draw is happening now');
-  setTimeout(() => {
-    if (Math.random() > 0.5) {
-      resolve('You won Lottery');
-    } else {
-      reject(new Error('You lost your money'));
-    }
-  }, 2000);
-});
+// const lotteryPromise = new Promise(function (resolve, reject) {
+//   console.log('Lottery draw is happening now');
+//   setTimeout(() => {
+//     if (Math.random() > 0.5) {
+//       resolve('You won Lottery');
+//     } else {
+//       reject(new Error('You lost your money'));
+//     }
+//   }, 2000);
+// });
 
-lotteryPromise.then(res => console.log(res)).catch(err => console.error(err));
+// lotteryPromise.then(res => console.log(res)).catch(err => console.error(err));
+
+/////////////////////Promisifying set TimeOut Function////////////////////////////////
+// const wait = function (seconds) {
+//   return new Promise(function (resolve) {
+//     setTimeout(resolve, seconds * 1000);
+//   });
+// };
+
+// wait(2)
+//   .then(() => {
+//     console.log('Waited for 2 sec');
+//     return wait(1);
+//   })
+//   .then(() => console.log('Waited for 1 sec'));
+
+// Promise.resolve('abc').then(x => console.log(x));
+// Promise.reject(new Error('Problem!!')).catch(x => console.log(x));
+
+navigator.geolocation.getCurrentPosition(
+  position => console.log(position),
+  err => console.log(err)
+);
+console.log('Getting Location');
+
+//Promisifying Geolocation Api
+const getLocation = function () {
+  return new Promise(function (resolve, reject) {
+    navigator.geolocation.getCurrentPosition(resolve, reject);
+  });
+};
+
+getLocation().then(pos => console.log(pos));
+
+//To get location of any device
+
+const whereAmI = function () {
+  getLocation()
+    .then(pos => {
+      const { latitude: lat, longitude: lng } = pos.coords;
+      return fetch(`https://geocode.xyz/${lat},${lng}?geoit=xml&auth=apikey`);
+    })
+
+    .then(res => {
+      if (!res.ok) throw new Error(`Geolocation not working ${res.status}`);
+      return res.json();
+    })
+    .then(data => {
+      console.log(data);
+      console.log(`You are in ${data.city}, ${data.country}`);
+
+      return fetch(`https://restcountries.com/v3.1/name/${data.country}`);
+    })
+    .then(res => {
+      if (!res.ok) throw new Error(`Country not found ${res.status}`);
+
+      return res.json();
+    })
+    .then(data => renderCountry(data[0]))
+    .catch(err => console.log(`${err.message}`));
+};
