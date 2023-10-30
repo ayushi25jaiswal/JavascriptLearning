@@ -202,48 +202,48 @@ GOOD LUCK 😀
 // Promise.resolve('abc').then(x => console.log(x));
 // Promise.reject(new Error('Problem!!')).catch(x => console.log(x));
 
-navigator.geolocation.getCurrentPosition(
-  position => console.log(position),
-  err => console.log(err)
-);
-console.log('Getting Location');
+// navigator.geolocation.getCurrentPosition(
+//   position => console.log(position),
+//   err => console.log(err)
+// );
+// console.log('Getting Location');
 
-//Promisifying Geolocation Api
-const getLocation = function () {
-  return new Promise(function (resolve, reject) {
-    navigator.geolocation.getCurrentPosition(resolve, reject);
-  });
-};
+// //Promisifying Geolocation Api
+// const getLocation = function () {
+//   return new Promise(function (resolve, reject) {
+//     navigator.geolocation.getCurrentPosition(resolve, reject);
+//   });
+// };
 
-getLocation().then(pos => console.log(pos));
+// getLocation().then(pos => console.log(pos));
 
 //To get location of any device
 
-const whereAmI = function () {
-  getLocation()
-    .then(pos => {
-      const { latitude: lat, longitude: lng } = pos.coords;
-      return fetch(`https://geocode.xyz/${lat},${lng}?geoit=xml&auth=apikey`);
-    })
+// const whereAmI = function () {
+//   getLocation()
+//     .then(pos => {
+//       const { latitude: lat, longitude: lng } = pos.coords;
+//       return fetch(`https://geocode.xyz/${lat},${lng}?geoit=xml&auth=apikey`);
+//     })
 
-    .then(res => {
-      if (!res.ok) throw new Error(`Geolocation not working ${res.status}`);
-      return res.json();
-    })
-    .then(data => {
-      console.log(data);
-      console.log(`You are in ${data.city}, ${data.country}`);
+//     .then(res => {
+//       if (!res.ok) throw new Error(`Geolocation not working ${res.status}`);
+//       return res.json();
+//     })
+//     .then(data => {
+//       console.log(data);
+//       console.log(`You are in ${data.city}, ${data.country}`);
 
-      return fetch(`https://restcountries.com/v3.1/name/${data.country}`);
-    })
-    .then(res => {
-      if (!res.ok) throw new Error(`Country not found ${res.status}`);
+//       return fetch(`https://restcountries.com/v3.1/name/${data.country}`);
+//     })
+//     .then(res => {
+//       if (!res.ok) throw new Error(`Country not found ${res.status}`);
 
-      return res.json();
-    })
-    .then(data => renderCountry(data[0]))
-    .catch(err => console.log(`${err.message}`));
-};
+//       return res.json();
+//     })
+//     .then(data => renderCountry(data[0]))
+//     .catch(err => console.log(`${err.message}`));
+// };
 
 /* 
 Build the image loading functionality that I just showed you on the screen.
@@ -274,43 +274,117 @@ TEST DATA: Images in the img folder. Test the error handler by passing a wrong i
 
 GOOD LUCK 😀
 */
-const imageContainer = document.querySelector('.images');
+// const imageContainer = document.querySelector('.images');
 
-const createImage = function (imgPath) {
+// const createImage = function (imgPath) {
+//   return new Promise(function (resolve, reject) {
+//     const img = document.createElement('img');
+//     img.src = imgPath;
+
+//     img.addEventListener('load', function () {
+//       imageContainer.append(img);
+//       resolve(img);
+//     });
+
+//     img.addEventListener('error', function () {
+//       reject(new Error('Image not Found'));
+//     });
+//   });
+// };
+
+// const wait = function (seconds) {
+//   return new Promise(function (resolve) {
+//     setTimeout(resolve, seconds * 1000);
+//   });
+// };
+
+// let currentImg;
+// createImage('img/img-1.jpg')
+//   .then(img => {
+//     currentImg = img;
+//     console.log('Image 1 Loaded');
+//     return wait(2);
+//   })
+//   .then(() => {
+//     currentImg.style.display = 'none';
+//     return createImage('img/img-2.jpg');
+//   })
+//   .then(img => {
+//     currentImg = img;
+//     console.log('Image-2 Loaded');
+//   })
+//   .catch(err => console.error(err));
+
+///////////////////////////////////////////Async/Await /////////////////////////////////////
+const getLocation = function () {
   return new Promise(function (resolve, reject) {
-    const img = document.createElement('img');
-    img.src = imgPath;
-
-    img.addEventListener('load', function () {
-      imageContainer.append(img);
-      resolve(img);
-    });
-
-    img.addEventListener('error', function () {
-      reject(new Error('Image not Found'));
-    });
+    navigator.geolocation.getCurrentPosition(resolve, reject);
   });
 };
 
-const wait = function (seconds) {
-  return new Promise(function (resolve) {
-    setTimeout(resolve, seconds * 1000);
-  });
-};
+const whereAmI = async function () {
+  try {
+    let pos = await getLocation();
+    const { lat, lng } = pos.coords;
+    const resGeo = await fetch(
+      `https://geocode.xyz/${lat},${lng}?geoit=xml&auth=apikey`
+    );
+    if (!resGeo.ok) throw new Error('DATA IS NOT FETCHED');
+    const dataGeo = resGeo.json();
 
-let currentImg;
-createImage('img/img-1.jpg')
-  .then(img => {
-    currentImg = img;
-    console.log('Image 1 Loaded');
-    return wait(2);
-  })
-  .then(() => {
-    currentImg.style.display = 'none';
-    return createImage('img/img-2.jpg');
-  })
-  .then(img => {
-    currentImg = img;
-    console.log('Image-2 Loaded');
-  })
-  .catch(err => console.error(err));
+    const res = await fetch(
+      `https://restcountries.com/v3.1/name/${dataGeo.country}`
+    );
+    if (!res.ok) throw new Error('DATA IS NOT FETCHED');
+    // console.log(res);
+    const data = await res.json();
+    console.log(data);
+    renderCountry(data[0]);
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+console.log('FIRST');
+whereAmI('japan');
+
+/////////TRY & CATCH METHOD
+
+try {
+  let x = 1;
+  const y = 0;
+  y = 1;
+} catch (err) {
+  console.log(err.message);
+}
+
+const whereAmI = async function (country) {
+  try {
+    const res = await fetch(`https://restcountries.com/v3.1/name/${country}`);
+    const data = await res.json();
+    console.log(data);
+    renderCountry(data[0]);
+    return `You are in ${country}`;
+  } catch (err) {
+    console.log(err.message);
+
+    // Reject promise returned from async function
+    throw err;
+  }
+};
+console.log('1: Get Country');
+// whereAmI('japan ')
+//   .then(city => console.log(`2: ${city}`))
+//   .catch(err => console.error(`💥💥💥${err.message}`))
+//   .finally(() => console.log('3: Finised rendering country'));
+
+/////////////////ASYNC IIFEs
+
+(async function () {
+  try {
+    const res = await whereAmI('japan');
+    console.log(`2: ${res}`);
+  } catch (err) {
+    console.error(`2: 💥💥💥${err.message}`);
+  }
+  console.log('3: Finised rendering country');
+})();
